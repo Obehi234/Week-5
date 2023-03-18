@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Travel App- Week 5</string>
+    <string name="enjoy_the_trip_nwith_me">Enjoy the trip \nwith me</string>
+    <string name="company_logo">Company Logo</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_in">Sign in</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="new_account">New \nAccount</string>
+    <string name="upload_picture">Upload picture</string>
+    <string name="camera">Profile Camera</string>
+    <string name="email_label">Email</string>
+    <string name="email_gmail_com">email@gmail.com</string>
+    <string name="email_icon">email icon</string>
+    <string name="email">Email</string>
+    <string name="please_enter_your_email">Please enter your email</string>
+    <string name="required">Required</string>
+    <string name="phonenumber">Phonenumber</string>
+    <string name="gender">Gender</string>
+    <string name="phone_number_prefix">+234</string>
+    <string name="password">Password</string>
+    <string name="name">Name</string>
+    <string name="user_email">Email</string>
+    <string name="or_sign_in_with">or sign in with</string>
+    <string name="congrats">Congrats!!</string>
+    <string name="welcome">Welcome!!</string>
+</resources>
