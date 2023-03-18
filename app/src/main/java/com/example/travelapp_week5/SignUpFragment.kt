@@ -1,7 +1,6 @@
 package com.example.travelapp_week5
 
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -17,12 +16,6 @@ class SignUpFragment : Fragment() {
     private lateinit var userEmail: TextInputEditText
     private lateinit var userPhone: TextInputEditText
     private lateinit var userName: TextInputEditText
-
-    //Add variables to store user input
-//    private var nameInput: String = ""
-//    private var emailInput: String = ""
-//    private var phoneInput: String = ""
-//    private var genderInput: String = ""
 
     //AutoComplete drop down items
     private val subjects = arrayOf("Male", "Female", "Non-Binary", "Other")
@@ -45,12 +38,6 @@ class SignUpFragment : Fragment() {
         //Get a reference to the autocompleteView(spinner)
         gender = view.findViewById(R.id.user_gender_select)
 
-       val  nameInput = userName.text.toString()
-       val  emailInput = userEmail.text.toString()
-       val  phoneInput = userPhone.text.toString()
-       val  genderInput = gender.text.toString()
-        Log.d("nameInput", "1 $nameInput")
-
 
         // create an array adapter and pass the required parameters
         val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, subjects)
@@ -65,23 +52,27 @@ class SignUpFragment : Fragment() {
         //Launch Congrats Fragment with SignUp Button
         signUpButton = view.findViewById(R.id.signUpButton)
         signUpButton.setOnClickListener {
-//            val emailError = validateEmail()
-//            val passwordError = validatePassword()
-//            val phoneError = validatePhone()
-//            val nameError = validateName()
-//            val genderError = validateGender()
-            launchCongrats(nameInput, emailInput, phoneInput, genderInput)
+            val nameInput = userName.text.toString()
+            val emailInput = userEmail.text.toString()
+            val phoneInput = userPhone.text.toString()
+            val genderInput = gender.text.toString()
 
-//            if (passwordError == null && phoneError == null && nameError == null && genderError == null) {
-//                launchCongrats()
-//            } else {
-//                // display error message to the user
-//                Toast.makeText(
-//                    requireContext(),
-//                    "${emailError ?: ""} ${passwordError ?: ""} ${phoneError ?: ""} ${nameError ?: ""} ${genderError ?: ""}",
-//                    Toast.LENGTH_LONG
-//                ).show()
+            val emailError = validateEmail(emailInput)
+            val passwordError = validatePassword()
+            val phoneError = validatePhone(phoneInput)
+            val nameError = validateName(nameInput)
+            val genderError = validateGender(genderInput)
 
+            if (passwordError == null && phoneError == null && nameError == null && genderError == null) {
+                launchCongrats(nameInput, emailInput, phoneInput, genderInput)
+            } else {
+                // display error message to the user
+                Toast.makeText(
+                    requireContext(),
+                    "${emailError ?: ""} ${passwordError ?: ""} ${phoneError ?: ""} ${nameError ?: ""} ${genderError ?: ""}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
 
         }
 
@@ -94,9 +85,12 @@ class SignUpFragment : Fragment() {
         args.putString("email", emailInput)
         args.putString("phone", phoneInput)
         args.putString("gender", genderInput)
-        Log.d("nameInput", "2 $nameInput")
-        CongratsFragment().arguments = args
-        fragmentTransaction.replace(R.id.fragment_container, CongratsFragment())
+
+        /**
+         * always save your fragment instance in a variable */
+        val congratsFragment = CongratsFragment()
+        congratsFragment.arguments = args
+        fragmentTransaction.replace(R.id.fragment_container, congratsFragment)
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
 
@@ -122,61 +116,57 @@ class SignUpFragment : Fragment() {
     }
 
     //Email Validation
-//    private fun validateEmail(): String? {
-////        val emailOutput = userEmail.text.toString()
-//        if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
-//            userEmail.error = "Invalid email address"
-//            return "Invalid email address"
-//        } else {
-//            userEmail.error = null
-//            return null
-//        }
-//    }
+    private fun validateEmail(emailInput: String): String? {
+        return if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+            userEmail.error = "Invalid email address"
+            "Invalid email address"
+        } else {
+            userEmail.error = null
+            null
+        }
+    }
 
-//    //Validate Phone Number
-//    private fun validatePhone(): String? {
-////        val phoneOutput = userPhone.text.toString().trim()
-//        if (phoneInput.isEmpty()) {
-//            return "Phone number is required"
-//        }
+    //Validate Phone Number
+    private fun validatePhone(phoneInput: String): String? {
+        if (phoneInput.isEmpty()) {
+            return "Phone number is required"
+        }
 //        if (!phoneInput.matches("^\\+?234\\d{9}$|^0\\d{10}$".toRegex())) {
 //            return "Must be digits"
 //        }
-//        if (phoneInput.length != 10) {
-//            return "Must be 10 digits"
-//        }
-//        return null
-//    }
-//
-//    //Validate User Name
-//    private fun validateName(): String? {
-////        val nameOutput = userName.text.toString()
-//        if (nameInput.isNullOrEmpty()) {
-//            return "User name is required"
-//        }
-//        val nameParts = nameInput.split(" ")
-//        if (nameParts.size != 2) {
-//            return "Please enter both first and last names separated by a space"
-//        }
-//        val firstName = nameParts[0]
-//        val lastName = nameParts[1]
-//        if (!firstName.matches("[a-zA-Z]+".toRegex()) || !lastName.matches("[a-zA-Z]+".toRegex())) {
-//            return "First and last names must contain only alphabets"
-//        }
-//        return null
-//    }
-//
-//    //Validate User Gender
-//    private fun validateGender(): String? {
-////        val genderOutput = gender.text.toString()
-//        if (!subjects.contains(genderInput)) {
-//            return "Please select a valid gender"
-//        }
-//        if (genderInput.isBlank()) {
-//            return "Please select a gender"
-//        }
-//        return null
-//    }
+        if (phoneInput.length != 10) {
+            return "Must be 10 digits"
+        }
+        return null
+    }
+
+    //Validate User Name
+    private fun validateName(nameInput: String): String? {
+        if (nameInput.isEmpty()) {
+            return "User name is required"
+        }
+        val nameParts = nameInput.split(" ")
+        if (nameParts.size != 2) {
+            return "Please enter both first and last names separated by a space"
+        }
+        val firstName = nameParts[0]
+        val lastName = nameParts[1]
+        if (!firstName.matches("[a-zA-Z]+".toRegex()) || !lastName.matches("[a-zA-Z]+".toRegex())) {
+            return "First and last names must contain only alphabets"
+        }
+        return null
+    }
+
+    //Validate User Gender
+    private fun validateGender(genderInput: String): String? {
+        if (!subjects.contains(genderInput)) {
+            return "Please select a valid gender"
+        }
+        if (genderInput.isBlank()) {
+            return "Please select a gender"
+        }
+        return null
+    }
 
 }
 
