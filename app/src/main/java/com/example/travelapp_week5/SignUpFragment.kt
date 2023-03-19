@@ -10,12 +10,12 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
 
 class SignUpFragment : Fragment() {
-    private lateinit var gender: AutoCompleteTextView
+    lateinit var gender: AutoCompleteTextView
     private lateinit var signUpButton: Button
-    private lateinit var userPassword: TextInputEditText
-    private lateinit var userEmail: TextInputEditText
-    private lateinit var userPhone: TextInputEditText
-    private lateinit var userName: TextInputEditText
+    lateinit var userPassword: TextInputEditText
+    lateinit var userEmail: TextInputEditText
+    lateinit var userPhone: TextInputEditText
+    lateinit var userName: TextInputEditText
 
     //AutoComplete drop down items
     private val subjects = arrayOf("Male", "Female", "Non-Binary", "Other")
@@ -98,50 +98,47 @@ class SignUpFragment : Fragment() {
     }
 
     //Password Validation
-    private fun validatePassword(): String? {
+    fun validatePassword(): String? {
         val outputPassword = userPassword.text.toString()
         if (outputPassword.length < 8) {
-            return "Minimum 8 Character password"
+            return "Password must contain a minimum of 8 Characters"
         }
         if (!outputPassword.matches(".*[A-Z].*".toRegex())) {
-            return "Must contain 1 uppercase character"
+            return "Password must contain 1 uppercase character"
         }
         if (!outputPassword.matches(".*[a-z].*".toRegex())) {
-            return "Must contain 1 lower case character"
+            return "Password must contain 1 lower case character"
         }
         if (!outputPassword.matches(".*[@#\$%^&+=].*".toRegex())) {
-            return "Must Contain 1 special character (@#\$%^&+=)"
+            return "Password must contain at least 1 special character (@#\$%^&+=)"
         }
         return null
     }
 
     //Email Validation
-    private fun validateEmail(emailInput: String): String? {
-        return if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
-            userEmail.error = "Invalid email address"
-            "Invalid email address"
-        } else {
-            userEmail.error = null
-            null
+    fun validateEmail(emailInput: String): String? {
+        if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+            return "Invalid email address"
         }
+        if(emailInput.isEmpty()) {
+            return "Email is required"
+        }
+        return null
     }
 
     //Validate Phone Number
-    private fun validatePhone(phoneInput: String): String? {
+    fun validatePhone(phoneInput: String): String? {
         if (phoneInput.isEmpty()) {
             return "Phone number is required"
         }
-//        if (!phoneInput.matches("^\\+?234\\d{9}$|^0\\d{10}$".toRegex())) {
-//            return "Must be digits"
-//        }
         if (phoneInput.length != 10) {
-            return "Must be 10 digits"
+            return "Phone number must be 10 digits"
         }
         return null
     }
 
     //Validate User Name
-    private fun validateName(nameInput: String): String? {
+    fun validateName(nameInput: String): String? {
         if (nameInput.isEmpty()) {
             return "User name is required"
         }
@@ -158,7 +155,7 @@ class SignUpFragment : Fragment() {
     }
 
     //Validate User Gender
-    private fun validateGender(genderInput: String): String? {
+    fun validateGender(genderInput: String): String? {
         if (!subjects.contains(genderInput)) {
             return "Please select a valid gender"
         }
